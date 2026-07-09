@@ -548,6 +548,7 @@ body {
 .c8  { background: linear-gradient(135deg, #1a1500, #2e2800); }
 .c9  { background: linear-gradient(135deg, #1a0000, #3d0000); }
 .c10 { background: linear-gradient(135deg, #1a1400, #3d3000); }
+.c11 { background: linear-gradient(135deg, #1a0022, #4a0d6b); }
 
 .t1  { color: #ff6a00; }
 .t2  { color: #00c8ff; }
@@ -559,6 +560,43 @@ body {
 .t8  { color: #c8a800; }
 .t9  { color: #ff2200; }
 .t10 { color: #f5d500; }
+.t11 { color: #c77dff; }
+
+/* Today featured hero */
+.today-hero {
+  display: flex; align-items: center; gap: 24px;
+  border-radius: 12px; padding: 24px; cursor: pointer;
+  position: relative; overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,0,0,.45);
+  transition: transform .15s;
+}
+.today-hero:hover { transform: translateY(-2px); }
+.today-emoji {
+  font-size: 64px; width: 120px; height: 120px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,.25); border-radius: 12px;
+}
+.today-body { flex: 1; min-width: 0; }
+.today-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; color: rgba(255,255,255,.75); margin-bottom: 6px;
+}
+.today-name { font-size: 28px; font-weight: 700; color: #fff; margin-bottom: 8px; line-height: 1.1; }
+.today-desc { font-size: 13px; color: rgba(255,255,255,.88); line-height: 1.5; max-width: 540px; margin-bottom: 8px; }
+.today-meta { font-size: 12px; color: rgba(255,255,255,.75); }
+.today-play {
+  width: 56px; height: 56px; flex-shrink: 0;
+  background: var(--sp-green); color: #000; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; text-decoration: none;
+  box-shadow: 0 8px 16px rgba(0,0,0,.4);
+  transition: transform .15s, background .15s;
+}
+.today-play:hover { transform: scale(1.08); background: #1ed760; }
+@media (max-width: 768px) {
+  .today-hero { flex-direction: column; text-align: center; }
+  .today-emoji { width: 96px; height: 96px; font-size: 52px; }
+}
 
 /* Monetize page */
 .mono-section { margin-bottom: 40px; }
@@ -720,6 +758,9 @@ body {
           <div class="page-hero">
             <div class="greeting" id="greeting">Boa tarde</div>
           </div>
+
+          <!-- Playlist de hoje (destaque) -->
+          <div class="section" id="today-section"></div>
 
           <!-- Quick play -->
           <div class="quick-grid" id="quick-grid"></div>
@@ -962,6 +1003,28 @@ const playlists = [
     {n:'Warriors', a:'Imagine Dragons', d:'2:41'},
     {n:'Eye of the Tiger', a:'Survivor', d:'4:05'},
   ]},
+  { id:11, day:'HOJE', name:'Clássicos de Hoje — Rock & Pop', desc:'Seleção do dia 09/07: o melhor de Beatles, Oasis, Skank, Roupa Nova e outros gigantes do rock e pop-rock atemporal.', color:'c11', text:'t11', emoji:'🎸', tracks:[
+    {n:'Hey Jude', a:'The Beatles', d:'7:11'},
+    {n:'Let It Be', a:'The Beatles', d:'4:03'},
+    {n:'Come Together', a:'The Beatles', d:'4:20'},
+    {n:'Wonderwall', a:'Oasis', d:'4:18'},
+    {n:"Don't Look Back in Anger", a:'Oasis', d:'4:48'},
+    {n:'Champagne Supernova', a:'Oasis', d:'7:27'},
+    {n:'Garota Nacional', a:'Skank', d:'4:31'},
+    {n:'Vou Deixar', a:'Skank', d:'3:56'},
+    {n:'É Uma Partida de Futebol', a:'Skank', d:'3:38'},
+    {n:'Whisky a Go Go', a:'Roupa Nova', d:'4:05'},
+    {n:'Dona', a:'Roupa Nova', d:'4:22'},
+    {n:'A Viagem', a:'Roupa Nova', d:'4:10'},
+    {n:'Tempo Perdido', a:'Legião Urbana', d:'5:08'},
+    {n:'Meu Erro', a:'Os Paralamas do Sucesso', d:'3:28'},
+    {n:'Só Hoje', a:'Jota Quest', d:'4:15'},
+    {n:'Epitáfio', a:'Titãs', d:'4:16'},
+    {n:'Yellow', a:'Coldplay', d:'4:29'},
+    {n:'With or Without You', a:'U2', d:'4:56'},
+    {n:'Bohemian Rhapsody', a:'Queen', d:'5:55'},
+    {n:'Angie', a:'The Rolling Stones', d:'4:33'},
+  ]},
 ];
 
 const revenues = [
@@ -999,14 +1062,14 @@ function buildLibrary() {
       <div class="lib-cover ${p.color}" style="color:${getTextColor(p.text)}">${p.emoji}</div>
       <div class="lib-info">
         <div class="lib-name">${p.name}</div>
-        <div class="lib-meta">Playlist · Dia ${p.day}</div>
+        <div class="lib-meta">${p.day === 'HOJE' ? 'Playlist · Hoje' : 'Playlist · Dia ' + p.day}</div>
       </div>
     </div>
   `).join('');
 }
 
 function getTextColor(t) {
-  const map = {t1:'#ff6a00',t2:'#00c8ff',t3:'#f5d500',t4:'#6ab882',t5:'#e8200a',t6:'#ff8c42',t7:'#8080cc',t8:'#c8a800',t9:'#ff2200',t10:'#f5d500'};
+  const map = {t1:'#ff6a00',t2:'#00c8ff',t3:'#f5d500',t4:'#6ab882',t5:'#e8200a',t6:'#ff8c42',t7:'#8080cc',t8:'#c8a800',t9:'#ff2200',t10:'#f5d500',t11:'#c77dff'};
   return map[t] || '#fff';
 }
 
@@ -1024,18 +1087,39 @@ function buildQuickGrid() {
 function buildCardsGrid() {
   const grid = document.getElementById('cards-grid');
   const sg = document.getElementById('search-grid');
-  const html = playlists.map(p => `
+  const card = p => `
     <div class="playlist-card" onclick="openPlaylist(${p.id})">
       <div class="card-cover ${p.color}">
         ${p.emoji}
         <a class="play-btn" href="${getSpotifyUrl(p.name)}" target="_blank" onclick="event.stopPropagation()" title="Abrir no Spotify">▶</a>
       </div>
       <div class="card-name">${p.name}</div>
-      <div class="card-desc">Dia ${p.day} · ${p.desc}</div>
+      <div class="card-desc">${p.day === 'HOJE' ? 'Hoje' : 'Dia ' + p.day} · ${p.desc}</div>
     </div>
-  `).join('');
-  grid.innerHTML = html;
-  sg.innerHTML = html;
+  `;
+  // Home mostra os 10 dias de lançamento; a playlist de hoje aparece no destaque acima.
+  grid.innerHTML = playlists.filter(p => p.day !== 'HOJE').map(card).join('');
+  sg.innerHTML = playlists.map(card).join('');
+}
+
+function buildTodaySection() {
+  const p = playlists.find(x => x.day === 'HOJE');
+  if (!p) return;
+  document.getElementById('today-section').innerHTML = `
+    <div class="section-header">
+      <div class="section-title">🎸 Playlist de Hoje</div>
+    </div>
+    <div class="today-hero ${p.color}" onclick="openPlaylist(${p.id})">
+      <div class="today-emoji">${p.emoji}</div>
+      <div class="today-body">
+        <div class="today-label">Feita para hoje</div>
+        <div class="today-name">${p.name}</div>
+        <div class="today-desc">${p.desc}</div>
+        <div class="today-meta">${p.tracks.length} músicas · Beatles · Oasis · Skank · Roupa Nova</div>
+      </div>
+      <a class="today-play" href="${getSpotifyUrl(p.name)}" target="_blank" onclick="event.stopPropagation()" title="Abrir no Spotify">▶</a>
+    </div>
+  `;
 }
 
 function buildRevCards() {
@@ -1110,7 +1194,7 @@ function openPlaylist(id) {
         <div class="detail-type">Playlist Pública</div>
         <div class="detail-title">${currentPlaylist.name}</div>
         <div class="detail-desc">${currentPlaylist.desc}</div>
-        <div class="detail-meta"><strong>T.DAY</strong> · Dia ${currentPlaylist.day} · ${currentPlaylist.tracks.length} músicas</div>
+        <div class="detail-meta"><strong>T.DAY</strong> · ${currentPlaylist.day === 'HOJE' ? 'Hoje' : 'Dia ' + currentPlaylist.day} · ${currentPlaylist.tracks.length} músicas</div>
       </div>
     </div>
     <div class="detail-actions">
@@ -1239,6 +1323,7 @@ function setGreeting() {
 // Init
 setGreeting();
 buildLibrary();
+buildTodaySection();
 buildQuickGrid();
 buildCardsGrid();
 buildRevCards();

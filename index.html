@@ -620,6 +620,51 @@ body {
   .today-emoji { width: 96px; height: 96px; font-size: 52px; }
 }
 
+/* ── PAINEL DE CONTROLE ── */
+.badge { display:inline-block; font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px; letter-spacing:.3px; text-decoration:none; }
+.b-ok { background:rgba(29,185,84,.15); color:var(--sp-green); }
+.b-pending { background:rgba(245,176,65,.15); color:#f5b041; }
+.b-muted { background:rgba(255,255,255,.08); color:var(--sp-gray); }
+.b-cat { background:rgba(255,255,255,.08); color:var(--sp-white); }
+
+.painel-filters { display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap; }
+.pf-btn { background:rgba(255,255,255,.07); border:none; color:var(--sp-gray); padding:8px 16px; border-radius:20px; font-size:13px; font-weight:700; cursor:pointer; font-family:inherit; transition:all .15s; }
+.pf-btn:hover { color:#fff; background:rgba(255,255,255,.12); }
+.pf-btn.active { background:#fff; color:#000; }
+
+.cat-head, .cat-row { display:grid; grid-template-columns:2.4fr 1fr .6fr .8fr 1fr; align-items:center; gap:12px; padding:12px 14px; }
+.cat-head { color:var(--sp-gray); font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; border-bottom:1px solid #282828; }
+.cat-row { border-bottom:1px solid #232323; cursor:pointer; transition:background .15s; border-radius:6px; }
+.cat-row:hover { background:rgba(255,255,255,.05); }
+.cat-name { display:flex; align-items:center; gap:12px; font-size:14px; font-weight:600; color:#fff; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+.cat-cover { width:36px; height:36px; border-radius:5px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:16px; }
+
+.reg-row { display:flex; align-items:center; gap:14px; padding:12px 14px; background:var(--sp-card); border-radius:8px; margin-bottom:8px; text-decoration:none; transition:background .15s; }
+.reg-row:hover { background:var(--sp-hover); }
+.reg-cover { width:44px; height:44px; border-radius:6px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:20px; }
+.reg-info { flex:1; overflow:hidden; }
+.reg-name { display:block; font-size:14px; font-weight:700; color:#fff; }
+.reg-meta { display:block; font-size:12px; color:var(--sp-gray); margin-top:2px; }
+
+.rm-progress { display:flex; align-items:center; gap:12px; margin-bottom:20px; }
+.rm-bar { flex:1; height:8px; background:#282828; border-radius:4px; overflow:hidden; }
+.rm-fill { height:100%; background:var(--sp-green); border-radius:4px; transition:width .3s; }
+.rm-pct { font-size:13px; font-weight:700; color:var(--sp-green); white-space:nowrap; }
+.rm-phase { margin-bottom:20px; }
+.rm-phase-title { font-size:14px; font-weight:700; color:#fff; margin-bottom:10px; }
+.rm-item { display:flex; align-items:center; gap:12px; padding:11px 14px; background:var(--sp-card); border-radius:8px; margin-bottom:6px; cursor:pointer; transition:background .15s; }
+.rm-item:hover { background:var(--sp-hover); }
+.rm-check { width:22px; height:22px; border-radius:6px; border:2px solid var(--sp-gray); display:flex; align-items:center; justify-content:center; font-size:13px; color:#000; flex-shrink:0; transition:all .15s; }
+.rm-item.done .rm-check { background:var(--sp-green); border-color:var(--sp-green); }
+.rm-text { font-size:14px; color:#fff; }
+.rm-item.done .rm-text { color:var(--sp-gray); text-decoration:line-through; }
+
+@media (max-width:768px) {
+  .cat-head, .cat-row { grid-template-columns:2fr .8fr 1fr; }
+  .cat-head span:nth-child(3), .cat-row span:nth-child(3),
+  .cat-head span:nth-child(4), .cat-row span:nth-child(4) { display:none; }
+}
+
 /* Monetize page */
 .mono-section { margin-bottom: 40px; }
 .mono-section h2 { font-size: 24px; font-weight: 700; margin-bottom: 20px; }
@@ -729,6 +774,9 @@ body {
         </a>
         <a class="nav-item" onclick="showPage('search',this)" href="#">
           <span class="icon">🔍</span> Buscar
+        </a>
+        <a class="nav-item" onclick="showPage('painel',this)" href="#">
+          <span class="icon">🎛️</span> Painel
         </a>
         <a class="nav-item" onclick="showPage('monetize',this)" href="#">
           <span class="icon">💰</span> Monetizar
@@ -866,6 +914,33 @@ body {
         <div class="section">
           <div class="section-header"><div class="section-title">Performance por playlist</div></div>
           <div id="dash-table"></div>
+        </div>
+      </div>
+
+      <!-- ══ PAINEL PAGE ══ -->
+      <div class="page" id="page-painel">
+        <div class="page-hero">
+          <div class="greeting">🎛️ Painel de Controle</div>
+          <p style="color:var(--sp-gray);font-size:14px;margin-top:8px">Gestão e organização de todas as suas playlists — construído para escalar e monetizar, um passo de cada vez.</p>
+        </div>
+
+        <div id="painel-kpis" class="stats-row"></div>
+
+        <div class="section">
+          <div class="section-header"><div class="section-title">🎧 Publicação no Spotify</div></div>
+          <div id="painel-spotify"></div>
+        </div>
+
+        <div class="section">
+          <div class="section-header"><div class="section-title">📚 Catálogo completo</div></div>
+          <div id="painel-filters" class="painel-filters"></div>
+          <div id="painel-catalog"></div>
+        </div>
+
+        <div class="section">
+          <div class="section-header"><div class="section-title">🚀 Plano de crescimento — passo a passo</div></div>
+          <div class="notice" style="margin-bottom:16px">Comece pequeno e vá marcando conforme avança. <strong>Seu progresso fica salvo</strong> neste navegador.</div>
+          <div id="painel-roadmap"></div>
         </div>
       </div>
 
@@ -2377,6 +2452,134 @@ function buildDashTable() {
   `).join('');
 }
 
+// ── PAINEL DE CONTROLE ──
+// Registro das playlists já publicadas no Spotify (id da playlist -> link).
+const spotifyLinks = {
+  11: 'https://open.spotify.com/playlist/2bjCqc0G25asmABefcpT3H',
+  12: 'https://open.spotify.com/playlist/4T1QICvy4hruugOnMyTspC',
+  13: 'https://open.spotify.com/playlist/3I9dM6dIdlcQMOtlDHJqL3',
+};
+
+function playlistCategory(p) {
+  if (p.day === 'HOJE' || p.day === 'TB100') return 'Coletânea';
+  if (/^V\d+$/.test(p.day)) return 'Volume';
+  return 'Dia';
+}
+
+function spotifyStatus(p) {
+  if (spotifyLinks[p.id]) return { label:'No Spotify', cls:'ok', url:spotifyLinks[p.id] };
+  if (/^V\d+$/.test(p.day)) return { label:'Pendente', cls:'pending' };
+  return { label:'Só no app', cls:'muted' };
+}
+
+const roadmap = [
+  { phase:'Fase 0 · Fundação (agora)', items:[
+    'Publicar TB 100 Vol. 2 a 10 no Spotify',
+    'Padronizar nomes, descrições e capas das playlists',
+    'Criar conta gratuita no Spotify for Artists',
+  ]},
+  { phase:'Fase 1 · Primeiros números', items:[
+    'Divulgar as playlists na bio e nas redes sociais',
+    'Alcançar 100 seguidores em pelo menos 1 playlist',
+    'Montar um media kit de 1 página (Canva)',
+  ]},
+  { phase:'Fase 2 · Primeira receita', items:[
+    'Ativar links de afiliado (produtos de áudio/música)',
+    'Oferecer playlist placement (cobrar por faixa incluída)',
+    'Fechar a 1ª parceria com uma marca pequena',
+  ]},
+  { phase:'Fase 3 · Escala', items:[
+    'Lançar uma comunidade premium (curadoria mensal)',
+    'Criar um infoproduto (curso de playlists)',
+    'Automatizar a curadoria e a publicação',
+  ]},
+];
+
+function rmState() { try { return JSON.parse(localStorage.getItem('tday-roadmap') || '{}'); } catch(e) { return {}; } }
+function rmSave(s) { try { localStorage.setItem('tday-roadmap', JSON.stringify(s)); } catch(e) {} }
+function toggleRm(key) { const s = rmState(); s[key] = !s[key]; rmSave(s); buildRoadmap(); }
+
+function buildRoadmap() {
+  const s = rmState();
+  let total = 0, done = 0;
+  roadmap.forEach((ph, pi) => ph.items.forEach((_, ii) => { total++; if (s[pi+'-'+ii]) done++; }));
+  const pct = total ? Math.round(done/total*100) : 0;
+  document.getElementById('painel-roadmap').innerHTML = `
+    <div class="rm-progress">
+      <div class="rm-bar"><div class="rm-fill" style="width:${pct}%"></div></div>
+      <span class="rm-pct">${done}/${total} · ${pct}%</span>
+    </div>
+    ${roadmap.map((ph, pi) => `
+      <div class="rm-phase">
+        <div class="rm-phase-title">${ph.phase}</div>
+        ${ph.items.map((it, ii) => {
+          const key = pi+'-'+ii; const on = !!s[key];
+          return `<div class="rm-item ${on?'done':''}" onclick="toggleRm('${key}')">
+            <span class="rm-check">${on?'✓':''}</span><span class="rm-text">${it}</span>
+          </div>`;
+        }).join('')}
+      </div>
+    `).join('')}
+  `;
+}
+
+let catFilter = 'all';
+function buildCatalog(cat) {
+  if (cat) catFilter = cat;
+  const cats = ['all','Dia','Coletânea','Volume'];
+  document.getElementById('painel-filters').innerHTML = cats.map(c =>
+    `<button class="pf-btn ${catFilter===c?'active':''}" onclick="buildCatalog('${c}')">${c==='all'?'Todas':c}</button>`
+  ).join('');
+  const rows = playlists.filter(p => catFilter==='all' || playlistCategory(p)===catFilter);
+  document.getElementById('painel-catalog').innerHTML = `
+    <div class="cat-head"><span>Playlist</span><span>Categoria</span><span>Faixas</span><span>App</span><span>Spotify</span></div>
+    ${rows.map(p => {
+      const st = spotifyStatus(p);
+      const spotifyCell = st.url
+        ? `<a class="badge b-ok" href="${st.url}" target="_blank" onclick="event.stopPropagation()">▶ Abrir</a>`
+        : `<span class="badge b-${st.cls}">${st.label}</span>`;
+      return `<div class="cat-row" onclick="openPlaylist(${p.id})">
+        <span class="cat-name"><span class="cat-cover ${p.color}">${p.emoji}</span>${p.name}</span>
+        <span><span class="badge b-cat">${playlistCategory(p)}</span></span>
+        <span>${p.tracks.length}</span>
+        <span><span class="badge b-ok">No app</span></span>
+        <span>${spotifyCell}</span>
+      </div>`;
+    }).join('')}
+  `;
+}
+
+function buildPainel() {
+  const total = playlists.length;
+  const totalTracks = playlists.reduce((s, p) => s + p.tracks.length, 0);
+  const artists = new Set();
+  playlists.forEach(p => p.tracks.forEach(t => artists.add(t.a.toLowerCase())));
+  const onSpotify = playlists.filter(p => spotifyLinks[p.id]).length;
+  const pendingVols = playlists.filter(p => /^V\d+$/.test(p.day) && !spotifyLinks[p.id]);
+
+  document.getElementById('painel-kpis').innerHTML = `
+    <div class="stat-card"><div class="s-val">${total}</div><div class="s-label">Playlists</div></div>
+    <div class="stat-card"><div class="s-val">${totalTracks}</div><div class="s-label">Faixas no total</div></div>
+    <div class="stat-card"><div class="s-val">${artists.size}</div><div class="s-label">Artistas únicos</div></div>
+    <div class="stat-card"><div class="s-val green">${onSpotify}</div><div class="s-label">No Spotify</div></div>
+    <div class="stat-card"><div class="s-val" style="color:#f5b041">${pendingVols.length}</div><div class="s-label">Pendentes no Spotify</div></div>
+  `;
+
+  const live = playlists.filter(p => spotifyLinks[p.id]);
+  document.getElementById('painel-spotify').innerHTML =
+    live.map(p => `
+      <a class="reg-row" href="${spotifyLinks[p.id]}" target="_blank">
+        <span class="reg-cover ${p.color}">${p.emoji}</span>
+        <span class="reg-info"><span class="reg-name">${p.name}</span><span class="reg-meta">${p.tracks.length} faixas · publicada</span></span>
+        <span class="badge b-ok">▶ No Spotify</span>
+      </a>
+    `).join('') +
+    (pendingVols.length ? `<div class="notice" style="margin-top:12px"><strong>${pendingVols.length} volumes pendentes.</strong> Vol. 2 a 10 ainda não foram criados no Spotify — é só me pedir para publicar quando quiser.</div>` : '');
+
+  buildCatalog('all');
+  buildRoadmap();
+}
+
 function openPlaylist(id) {
   currentPlaylist = playlists.find(p => p.id === id);
   if (!currentPlaylist) return;
@@ -2531,6 +2734,7 @@ buildCardsGrid();
 buildRevCards();
 buildSteps();
 buildDashTable();
+buildPainel();
 </script>
 </body>
 </html>

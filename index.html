@@ -549,6 +549,7 @@ body {
 .c9  { background: linear-gradient(135deg, #1a0000, #3d0000); }
 .c10 { background: linear-gradient(135deg, #1a1400, #3d3000); }
 .c11 { background: linear-gradient(135deg, #1a0022, #4a0d6b); }
+.c12 { background: linear-gradient(135deg, #2b1c00, #6b4a00); }
 
 .t1  { color: #ff6a00; }
 .t2  { color: #00c8ff; }
@@ -561,6 +562,7 @@ body {
 .t9  { color: #ff2200; }
 .t10 { color: #f5d500; }
 .t11 { color: #c77dff; }
+.t12 { color: #ffd24a; }
 
 /* Today featured hero */
 .today-hero {
@@ -761,6 +763,9 @@ body {
 
           <!-- Playlist de hoje (destaque) -->
           <div class="section" id="today-section"></div>
+
+          <!-- Coletânea TB 100 (destaque) -->
+          <div class="section" id="tb100-section"></div>
 
           <!-- Quick play -->
           <div class="quick-grid" id="quick-grid"></div>
@@ -1025,6 +1030,108 @@ const playlists = [
     {n:'Bohemian Rhapsody', a:'Queen', d:'5:55'},
     {n:'Angie', a:'The Rolling Stones', d:'4:33'},
   ]},
+  { id:12, day:'TB100', name:'TB 100', desc:'A melhor música de cada artista — 100 lendas do rock, pop, soul, R&B e hip-hop reunidas em uma coletânea definitiva.', color:'c12', text:'t12', emoji:'🏆', tracks:[
+    {n:"Bohemian Rhapsody", a:"Queen", d:"5:55"},
+    {n:"Hey Jude", a:"The Beatles", d:"7:11"},
+    {n:"Billie Jean", a:"Michael Jackson", d:"4:54"},
+    {n:"Stairway to Heaven", a:"Led Zeppelin", d:"8:02"},
+    {n:"Smells Like Teen Spirit", a:"Nirvana", d:"5:01"},
+    {n:"(I Can't Get No) Satisfaction", a:"The Rolling Stones", d:"3:44"},
+    {n:"Like a Rolling Stone", a:"Bob Dylan", d:"6:13"},
+    {n:"Imagine", a:"John Lennon", d:"3:03"},
+    {n:"What's Going On", a:"Marvin Gaye", d:"3:53"},
+    {n:"Respect", a:"Aretha Franklin", d:"2:28"},
+    {n:"God Only Knows", a:"The Beach Boys", d:"2:51"},
+    {n:"Heroes", a:"David Bowie", d:"6:07"},
+    {n:"Purple Rain", a:"Prince", d:"8:41"},
+    {n:"I Will Always Love You", a:"Whitney Houston", d:"4:31"},
+    {n:"Hotel California", a:"Eagles", d:"6:30"},
+    {n:"Sweet Child o' Mine", a:"Guns N' Roses", d:"5:56"},
+    {n:"With or Without You", a:"U2", d:"4:56"},
+    {n:"Born to Run", a:"Bruce Springsteen", d:"4:31"},
+    {n:"Wish You Were Here", a:"Pink Floyd", d:"5:34"},
+    {n:"Baba O'Riley", a:"The Who", d:"5:00"},
+    {n:"Superstition", a:"Stevie Wonder", d:"4:26"},
+    {n:"Rocket Man", a:"Elton John", d:"4:41"},
+    {n:"Go Your Own Way", a:"Fleetwood Mac", d:"3:38"},
+    {n:"Back in Black", a:"AC/DC", d:"4:15"},
+    {n:"Enter Sandman", a:"Metallica", d:"5:31"},
+    {n:"Redemption Song", a:"Bob Marley", d:"3:48"},
+    {n:"Purple Haze", a:"Jimi Hendrix", d:"2:50"},
+    {n:"Light My Fire", a:"The Doors", d:"7:06"},
+    {n:"Georgia on My Mind", a:"Ray Charles", d:"3:38"},
+    {n:"A Change Is Gonna Come", a:"Sam Cooke", d:"3:11"},
+    {n:"(Sittin' On) The Dock of the Bay", a:"Otis Redding", d:"2:44"},
+    {n:"I Got You (I Feel Good)", a:"James Brown", d:"2:47"},
+    {n:"Johnny B. Goode", a:"Chuck Berry", d:"2:41"},
+    {n:"Suspicious Minds", a:"Elvis Presley", d:"4:22"},
+    {n:"My Way", a:"Frank Sinatra", d:"4:35"},
+    {n:"Bridge Over Troubled Water", a:"Simon & Garfunkel", d:"4:52"},
+    {n:"Creep", a:"Radiohead", d:"3:58"},
+    {n:"Wonderwall", a:"Oasis", d:"4:18"},
+    {n:"Yellow", a:"Coldplay", d:"4:29"},
+    {n:"Under the Bridge", a:"Red Hot Chili Peppers", d:"4:24"},
+    {n:"Every Breath You Take", a:"The Police", d:"4:13"},
+    {n:"Livin' on a Prayer", a:"Bon Jovi", d:"4:09"},
+    {n:"Don't Stop Believin'", a:"Journey", d:"4:11"},
+    {n:"Eye of the Tiger", a:"Survivor", d:"4:05"},
+    {n:"What's Love Got to Do with It", a:"Tina Turner", d:"3:48"},
+    {n:"Like a Prayer", a:"Madonna", d:"5:39"},
+    {n:"Girls Just Want to Have Fun", a:"Cyndi Lauper", d:"3:58"},
+    {n:"Stayin' Alive", a:"Bee Gees", d:"4:45"},
+    {n:"Dancing Queen", a:"ABBA", d:"3:51"},
+    {n:"Rolling in the Deep", a:"Adele", d:"3:48"},
+    {n:"Rehab", a:"Amy Winehouse", d:"3:35"},
+    {n:"Crazy in Love", a:"Beyoncé", d:"3:56"},
+    {n:"Umbrella", a:"Rihanna", d:"4:35"},
+    {n:"Bad Romance", a:"Lady Gaga", d:"4:54"},
+    {n:"Firework", a:"Katy Perry", d:"3:47"},
+    {n:"Blank Space", a:"Taylor Swift", d:"3:51"},
+    {n:"Shape of You", a:"Ed Sheeran", d:"3:53"},
+    {n:"Just the Way You Are", a:"Bruno Mars", d:"3:40"},
+    {n:"Blinding Lights", a:"The Weeknd", d:"3:20"},
+    {n:"Don't Start Now", a:"Dua Lipa", d:"3:03"},
+    {n:"Lose Yourself", a:"Eminem", d:"5:26"},
+    {n:"99 Problems", a:"Jay-Z", d:"3:54"},
+    {n:"Stronger", a:"Kanye West", d:"5:11"},
+    {n:"HUMBLE.", a:"Kendrick Lamar", d:"2:57"},
+    {n:"God's Plan", a:"Drake", d:"3:18"},
+    {n:"Changes", a:"2Pac", d:"4:29"},
+    {n:"Juicy", a:"The Notorious B.I.G.", d:"5:02"},
+    {n:"Gin and Juice", a:"Snoop Dogg", d:"3:33"},
+    {n:"Still D.R.E.", a:"Dr. Dre", d:"4:30"},
+    {n:"Hey Ya!", a:"OutKast", d:"3:55"},
+    {n:"If I Ain't Got You", a:"Alicia Keys", d:"3:48"},
+    {n:"All of Me", a:"John Legend", d:"4:29"},
+    {n:"Stay With Me", a:"Sam Smith", d:"2:52"},
+    {n:"Chandelier", a:"Sia", d:"3:36"},
+    {n:"Royals", a:"Lorde", d:"3:10"},
+    {n:"bad guy", a:"Billie Eilish", d:"3:14"},
+    {n:"Believer", a:"Imagine Dragons", d:"3:24"},
+    {n:"Sugar", a:"Maroon 5", d:"3:55"},
+    {n:"Counting Stars", a:"OneRepublic", d:"4:17"},
+    {n:"In the End", a:"Linkin Park", d:"3:36"},
+    {n:"Boulevard of Broken Dreams", a:"Green Day", d:"4:20"},
+    {n:"Everlong", a:"Foo Fighters", d:"4:10"},
+    {n:"Alive", a:"Pearl Jam", d:"5:41"},
+    {n:"Black Hole Sun", a:"Soundgarden", d:"5:18"},
+    {n:"Seven Nation Army", a:"The White Stripes", d:"3:51"},
+    {n:"Do I Wanna Know?", a:"Arctic Monkeys", d:"4:32"},
+    {n:"Mr. Brightside", a:"The Killers", d:"3:42"},
+    {n:"Song 2", a:"Blur", d:"2:02"},
+    {n:"Enjoy the Silence", a:"Depeche Mode", d:"4:16"},
+    {n:"Just Like Heaven", a:"The Cure", d:"3:33"},
+    {n:"Once in a Lifetime", a:"Talking Heads", d:"4:19"},
+    {n:"Get Lucky", a:"Daft Punk", d:"6:07"},
+    {n:"Wake Me Up", a:"Avicii", d:"4:09"},
+    {n:"Summer", a:"Calvin Harris", d:"3:43"},
+    {n:"Titanium", a:"David Guetta", d:"4:05"},
+    {n:"Africa", a:"Toto", d:"4:55"},
+    {n:"Take On Me", a:"a-ha", d:"3:46"},
+    {n:"Sultans of Swing", a:"Dire Straits", d:"5:47"},
+    {n:"Smooth", a:"Santana", d:"4:56"},
+    {n:"Have You Ever Seen the Rain", a:"Creedence Clearwater Revival", d:"2:40"},
+  ]},
 ];
 
 const revenues = [
@@ -1062,10 +1169,16 @@ function buildLibrary() {
       <div class="lib-cover ${p.color}" style="color:${getTextColor(p.text)}">${p.emoji}</div>
       <div class="lib-info">
         <div class="lib-name">${p.name}</div>
-        <div class="lib-meta">${p.day === 'HOJE' ? 'Playlist · Hoje' : 'Playlist · Dia ' + p.day}</div>
+        <div class="lib-meta">Playlist · ${dayLabel(p.day)}</div>
       </div>
     </div>
   `).join('');
+}
+
+function dayLabel(day) {
+  if (day === 'HOJE') return 'Hoje';
+  if (day === 'TB100') return 'Coletânea';
+  return 'Dia ' + day;
 }
 
 function getTextColor(t) {
@@ -1094,11 +1207,11 @@ function buildCardsGrid() {
         <a class="play-btn" href="${getSpotifyUrl(p.name)}" target="_blank" onclick="event.stopPropagation()" title="Abrir no Spotify">▶</a>
       </div>
       <div class="card-name">${p.name}</div>
-      <div class="card-desc">${p.day === 'HOJE' ? 'Hoje' : 'Dia ' + p.day} · ${p.desc}</div>
+      <div class="card-desc">${dayLabel(p.day)} · ${p.desc}</div>
     </div>
   `;
-  // Home mostra os 10 dias de lançamento; a playlist de hoje aparece no destaque acima.
-  grid.innerHTML = playlists.filter(p => p.day !== 'HOJE').map(card).join('');
+  // Home mostra os 10 dias de lançamento; as coletâneas especiais aparecem em destaque acima.
+  grid.innerHTML = playlists.filter(p => !['HOJE','TB100'].includes(p.day)).map(card).join('');
   sg.innerHTML = playlists.map(card).join('');
 }
 
@@ -1116,6 +1229,26 @@ function buildTodaySection() {
         <div class="today-name">${p.name}</div>
         <div class="today-desc">${p.desc}</div>
         <div class="today-meta">${p.tracks.length} músicas · Beatles · Oasis · Skank · Roupa Nova</div>
+      </div>
+      <a class="today-play" href="${getSpotifyUrl(p.name)}" target="_blank" onclick="event.stopPropagation()" title="Abrir no Spotify">▶</a>
+    </div>
+  `;
+}
+
+function buildTB100Section() {
+  const p = playlists.find(x => x.day === 'TB100');
+  if (!p) return;
+  document.getElementById('tb100-section').innerHTML = `
+    <div class="section-header">
+      <div class="section-title">🏆 Coletânea TB 100</div>
+    </div>
+    <div class="today-hero ${p.color}" onclick="openPlaylist(${p.id})">
+      <div class="today-emoji">${p.emoji}</div>
+      <div class="today-body">
+        <div class="today-label">Coletânea especial</div>
+        <div class="today-name">${p.name}</div>
+        <div class="today-desc">${p.desc}</div>
+        <div class="today-meta">${p.tracks.length} músicas · a melhor de cada artista</div>
       </div>
       <a class="today-play" href="${getSpotifyUrl(p.name)}" target="_blank" onclick="event.stopPropagation()" title="Abrir no Spotify">▶</a>
     </div>
@@ -1194,7 +1327,7 @@ function openPlaylist(id) {
         <div class="detail-type">Playlist Pública</div>
         <div class="detail-title">${currentPlaylist.name}</div>
         <div class="detail-desc">${currentPlaylist.desc}</div>
-        <div class="detail-meta"><strong>T.DAY</strong> · ${currentPlaylist.day === 'HOJE' ? 'Hoje' : 'Dia ' + currentPlaylist.day} · ${currentPlaylist.tracks.length} músicas</div>
+        <div class="detail-meta"><strong>T.DAY</strong> · ${dayLabel(currentPlaylist.day)} · ${currentPlaylist.tracks.length} músicas</div>
       </div>
     </div>
     <div class="detail-actions">
@@ -1324,6 +1457,7 @@ function setGreeting() {
 setGreeting();
 buildLibrary();
 buildTodaySection();
+buildTB100Section();
 buildQuickGrid();
 buildCardsGrid();
 buildRevCards();

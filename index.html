@@ -621,41 +621,59 @@ body {
 }
 
 /* ── PAINEL DE CONTROLE ── */
-.badge { display:inline-block; font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px; letter-spacing:.3px; text-decoration:none; }
+.badge { display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:700; padding:4px 11px; border-radius:20px; letter-spacing:.3px; text-decoration:none; }
 .b-ok { background:rgba(29,185,84,.15); color:var(--sp-green); }
 .b-pending { background:rgba(245,176,65,.15); color:#f5b041; }
 .b-muted { background:rgba(255,255,255,.08); color:var(--sp-gray); }
 .b-cat { background:rgba(255,255,255,.08); color:var(--sp-white); }
+.b-dia { background:rgba(93,173,226,.16); color:#5dade2; }
+.b-col { background:rgba(199,125,255,.16); color:#c77dff; }
+.b-vol { background:rgba(245,210,74,.16); color:#f5d24a; }
+
+/* KPI cards */
+#painel-kpis { display:grid; grid-template-columns:repeat(auto-fit, minmax(150px,1fr)); gap:12px; margin-bottom:8px; }
+.kpi { background:linear-gradient(160deg, var(--sp-card), var(--sp-dark)); border:1px solid rgba(255,255,255,.06); border-radius:14px; padding:18px; transition:transform .15s, border-color .15s; }
+.kpi:hover { transform:translateY(-3px); border-color:var(--kpi-c,#1DB954); }
+.kpi-icon { font-size:17px; width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,.06); margin-bottom:14px; }
+.kpi-val { font-family:'Bebas Neue',sans-serif; font-size:42px; line-height:.9; color:var(--kpi-c,#fff); letter-spacing:1px; }
+.kpi-label { font-size:11px; color:var(--sp-gray); margin-top:8px; letter-spacing:.4px; text-transform:uppercase; }
 
 .painel-filters { display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap; }
 .pf-btn { background:rgba(255,255,255,.07); border:none; color:var(--sp-gray); padding:8px 16px; border-radius:20px; font-size:13px; font-weight:700; cursor:pointer; font-family:inherit; transition:all .15s; }
 .pf-btn:hover { color:#fff; background:rgba(255,255,255,.12); }
 .pf-btn.active { background:#fff; color:#000; }
 
-.cat-head, .cat-row { display:grid; grid-template-columns:2.4fr 1fr .6fr .8fr 1fr; align-items:center; gap:12px; padding:12px 14px; }
-.cat-head { color:var(--sp-gray); font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; border-bottom:1px solid #282828; }
-.cat-row { border-bottom:1px solid #232323; cursor:pointer; transition:background .15s; border-radius:6px; }
+.cat-table { background:var(--sp-dark); border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,.05); }
+.cat-head, .cat-row { display:grid; grid-template-columns:2.4fr 1fr .6fr .8fr 1fr; align-items:center; gap:12px; padding:13px 16px; }
+.cat-head { color:var(--sp-gray); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; background:rgba(255,255,255,.03); }
+.cat-row { border-top:1px solid #202020; cursor:pointer; transition:background .15s; }
 .cat-row:hover { background:rgba(255,255,255,.05); }
 .cat-name { display:flex; align-items:center; gap:12px; font-size:14px; font-weight:600; color:#fff; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
-.cat-cover { width:36px; height:36px; border-radius:5px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:16px; }
+.cat-cover { width:38px; height:38px; border-radius:6px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:17px; box-shadow:0 4px 10px rgba(0,0,0,.4); }
+.cat-tracks { font-family:'Bebas Neue',sans-serif; font-size:20px; color:var(--sp-white); letter-spacing:1px; }
 
-.reg-row { display:flex; align-items:center; gap:14px; padding:12px 14px; background:var(--sp-card); border-radius:8px; margin-bottom:8px; text-decoration:none; transition:background .15s; }
-.reg-row:hover { background:var(--sp-hover); }
+/* Spotify registry */
+#painel-spotify { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px,1fr)); gap:10px; }
+.reg-row { display:flex; align-items:center; gap:13px; padding:12px 14px; background:var(--sp-card); border-radius:10px; border-left:3px solid var(--sp-green); text-decoration:none; transition:background .15s, transform .15s; }
+.reg-row:hover { background:var(--sp-hover); transform:translateX(2px); }
 .reg-cover { width:44px; height:44px; border-radius:6px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:20px; }
 .reg-info { flex:1; overflow:hidden; }
-.reg-name { display:block; font-size:14px; font-weight:700; color:#fff; }
+.reg-name { display:block; font-size:14px; font-weight:700; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .reg-meta { display:block; font-size:12px; color:var(--sp-gray); margin-top:2px; }
+#painel-spotify .notice { grid-column:1/-1; }
 
-.rm-progress { display:flex; align-items:center; gap:12px; margin-bottom:20px; }
-.rm-bar { flex:1; height:8px; background:#282828; border-radius:4px; overflow:hidden; }
-.rm-fill { height:100%; background:var(--sp-green); border-radius:4px; transition:width .3s; }
-.rm-pct { font-size:13px; font-weight:700; color:var(--sp-green); white-space:nowrap; }
-.rm-phase { margin-bottom:20px; }
-.rm-phase-title { font-size:14px; font-weight:700; color:#fff; margin-bottom:10px; }
+/* Roadmap */
+.rm-progress { display:flex; align-items:center; gap:14px; margin-bottom:24px; }
+.rm-bar { flex:1; height:10px; background:#282828; border-radius:6px; overflow:hidden; }
+.rm-fill { height:100%; background:linear-gradient(90deg, #1DB954, #1ed760); border-radius:6px; transition:width .4s; }
+.rm-pct { font-size:14px; font-weight:700; color:var(--sp-green); white-space:nowrap; }
+.rm-phase { margin-bottom:18px; border-left:3px solid var(--ph-c,#1DB954); padding-left:16px; }
+.rm-phase-title { font-size:14px; font-weight:700; color:#fff; margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+.rm-phase-badge { font-size:11px; font-weight:700; color:var(--ph-c,#1DB954); background:rgba(255,255,255,.06); padding:2px 9px; border-radius:20px; }
 .rm-item { display:flex; align-items:center; gap:12px; padding:11px 14px; background:var(--sp-card); border-radius:8px; margin-bottom:6px; cursor:pointer; transition:background .15s; }
 .rm-item:hover { background:var(--sp-hover); }
 .rm-check { width:22px; height:22px; border-radius:6px; border:2px solid var(--sp-gray); display:flex; align-items:center; justify-content:center; font-size:13px; color:#000; flex-shrink:0; transition:all .15s; }
-.rm-item.done .rm-check { background:var(--sp-green); border-color:var(--sp-green); }
+.rm-item.done .rm-check { background:var(--ph-c,#1DB954); border-color:var(--ph-c,#1DB954); }
 .rm-text { font-size:14px; color:#fff; }
 .rm-item.done .rm-text { color:var(--sp-gray); text-decoration:line-through; }
 
@@ -2546,17 +2564,21 @@ function buildRoadmap() {
       <div class="rm-bar"><div class="rm-fill" style="width:${pct}%"></div></div>
       <span class="rm-pct">${done}/${total} · ${pct}%</span>
     </div>
-    ${roadmap.map((ph, pi) => `
-      <div class="rm-phase">
-        <div class="rm-phase-title">${ph.phase}</div>
+    ${roadmap.map((ph, pi) => {
+      const phaseColors = ['#1DB954','#5dade2','#f5b041','#c77dff'];
+      const c = phaseColors[pi % phaseColors.length];
+      const dn = ph.items.filter((_, ii) => s[pi+'-'+ii]).length;
+      return `
+      <div class="rm-phase" style="--ph-c:${c}">
+        <div class="rm-phase-title">${ph.phase} <span class="rm-phase-badge">${dn}/${ph.items.length}</span></div>
         ${ph.items.map((it, ii) => {
           const key = pi+'-'+ii; const on = !!s[key];
           return `<div class="rm-item ${on?'done':''}" onclick="toggleRm('${key}')">
             <span class="rm-check">${on?'✓':''}</span><span class="rm-text">${it}</span>
           </div>`;
         }).join('')}
-      </div>
-    `).join('')}
+      </div>`;
+    }).join('')}
   `;
 }
 
@@ -2568,21 +2590,25 @@ function buildCatalog(cat) {
     `<button class="pf-btn ${catFilter===c?'active':''}" onclick="buildCatalog('${c}')">${c==='all'?'Todas':c}</button>`
   ).join('');
   const rows = playlists.filter(p => catFilter==='all' || playlistCategory(p)===catFilter);
+  const catBadge = { 'Dia':'b-dia', 'Coletânea':'b-col', 'Volume':'b-vol' };
   document.getElementById('painel-catalog').innerHTML = `
-    <div class="cat-head"><span>Playlist</span><span>Categoria</span><span>Faixas</span><span>App</span><span>Spotify</span></div>
-    ${rows.map(p => {
-      const st = spotifyStatus(p);
-      const spotifyCell = st.url
-        ? `<a class="badge b-ok" href="${st.url}" target="_blank" onclick="event.stopPropagation()">▶ Abrir</a>`
-        : `<span class="badge b-${st.cls}">${st.label}</span>`;
-      return `<div class="cat-row" onclick="openPlaylist(${p.id})">
-        <span class="cat-name"><span class="cat-cover ${p.color}">${p.emoji}</span>${p.name}</span>
-        <span><span class="badge b-cat">${playlistCategory(p)}</span></span>
-        <span>${p.tracks.length}</span>
-        <span><span class="badge b-ok">No app</span></span>
-        <span>${spotifyCell}</span>
-      </div>`;
-    }).join('')}
+    <div class="cat-table">
+      <div class="cat-head"><span>Playlist</span><span>Categoria</span><span>Faixas</span><span>App</span><span>Spotify</span></div>
+      ${rows.map(p => {
+        const cat = playlistCategory(p);
+        const st = spotifyStatus(p);
+        const spotifyCell = st.url
+          ? `<a class="badge b-ok" href="${st.url}" target="_blank" onclick="event.stopPropagation()">▶ Abrir</a>`
+          : `<span class="badge b-${st.cls}">${st.label}</span>`;
+        return `<div class="cat-row" onclick="openPlaylist(${p.id})">
+          <span class="cat-name"><span class="cat-cover ${p.color}">${p.emoji}</span>${p.name}</span>
+          <span><span class="badge ${catBadge[cat]}">${cat}</span></span>
+          <span class="cat-tracks">${p.tracks.length}</span>
+          <span><span class="badge b-ok">✓ App</span></span>
+          <span>${spotifyCell}</span>
+        </div>`;
+      }).join('')}
+    </div>
   `;
 }
 
@@ -2622,13 +2648,19 @@ function buildPainel() {
   const onSpotify = playlists.filter(p => spotifyLinks[p.id]).length;
   const pendingVols = playlists.filter(p => /^V\d+$/.test(p.day) && !spotifyLinks[p.id]);
 
-  document.getElementById('painel-kpis').innerHTML = `
-    <div class="stat-card"><div class="s-val">${total}</div><div class="s-label">Playlists</div></div>
-    <div class="stat-card"><div class="s-val">${totalTracks}</div><div class="s-label">Faixas no total</div></div>
-    <div class="stat-card"><div class="s-val">${artists.size}</div><div class="s-label">Artistas únicos</div></div>
-    <div class="stat-card"><div class="s-val green">${onSpotify}</div><div class="s-label">No Spotify</div></div>
-    <div class="stat-card"><div class="s-val" style="color:#f5b041">${pendingVols.length}</div><div class="s-label">Pendentes no Spotify</div></div>
-  `;
+  const kpis = [
+    { icon:'🎵', c:'#ffffff', val:total,               label:'Playlists' },
+    { icon:'💿', c:'#5dade2', val:totalTracks,         label:'Faixas no total' },
+    { icon:'🎤', c:'#c77dff', val:artists.size,        label:'Artistas únicos' },
+    { icon:'🟢', c:'#1DB954', val:onSpotify,           label:'No Spotify' },
+    { icon:'⏳', c:'#f5b041', val:pendingVols.length,  label:'Pendentes' },
+  ];
+  document.getElementById('painel-kpis').innerHTML = kpis.map(k => `
+    <div class="kpi" style="--kpi-c:${k.c}">
+      <div class="kpi-icon">${k.icon}</div>
+      <div class="kpi-val">${k.val}</div>
+      <div class="kpi-label">${k.label}</div>
+    </div>`).join('');
 
   const live = playlists.filter(p => spotifyLinks[p.id]);
   document.getElementById('painel-spotify').innerHTML =

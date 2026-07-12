@@ -537,6 +537,31 @@ body {
 .vol-fill { height: 100%; width: 65%; background: var(--sp-gray); border-radius: 2px; }
 .vol-bar:hover .vol-fill { background: var(--sp-green); }
 
+/* ── COVER ART (capas) ── */
+.card-cover, .detail-cover, .today-emoji { position: relative; }
+.card-cover::before, .detail-cover::before, .today-emoji::before {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(130% 90% at 22% 12%, rgba(255,255,255,.24), rgba(255,255,255,0) 55%),
+    linear-gradient(180deg, rgba(255,255,255,0) 45%, rgba(0,0,0,.5));
+}
+.cover-emoji { position: relative; z-index: 1; filter: drop-shadow(0 6px 14px rgba(0,0,0,.45)); }
+.cover-brand {
+  position: absolute; left: 12px; bottom: 10px; z-index: 2;
+  font-family: 'Bebas Neue', sans-serif; font-size: 14px; letter-spacing: 1.5px; line-height: 1;
+  color: rgba(255,255,255,.92); text-shadow: 0 2px 6px rgba(0,0,0,.55);
+}
+.cover-brand span { color: var(--red); }
+.detail-cover .cover-brand { font-size: 26px; left: 20px; bottom: 16px; letter-spacing: 2px; }
+.today-emoji .cover-brand { font-size: 12px; left: 9px; bottom: 7px; }
+
+/* leve profundidade nas miniaturas */
+.lib-cover, .now-thumb, .cat-cover, .reg-cover, .quick-cover, .track-thumb { position: relative; }
+.lib-cover::after, .now-thumb::after, .cat-cover::after, .reg-cover::after, .quick-cover::after, .track-thumb::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: radial-gradient(120% 90% at 25% 15%, rgba(255,255,255,.16), rgba(255,255,255,0) 60%);
+}
+
 /* Colors per playlist */
 .c1  { background: linear-gradient(135deg, #1a0800, #3d1200); }
 .c2  { background: linear-gradient(135deg, #001a2e, #003d5c); }
@@ -2326,7 +2351,7 @@ function buildVolumesSection() {
       ${vols.map(p => `
         <div class="playlist-card" onclick="openPlaylist(${p.id})">
           <div class="card-cover ${p.color}">
-            ${p.emoji}
+            ${coverArt(p)}
             <a class="play-btn" href="${getSpotifyUrl(p.name)}" target="_blank" onclick="event.stopPropagation()" title="Abrir no Spotify">▶</a>
           </div>
           <div class="card-name">${p.name}</div>
@@ -2385,13 +2410,17 @@ function buildQuickGrid() {
   `).join('');
 }
 
+function coverArt(p) {
+  return `<span class="cover-emoji">${p.emoji}</span><span class="cover-brand">T<span>.</span>DAY</span>`;
+}
+
 function buildCardsGrid() {
   const grid = document.getElementById('cards-grid');
   const sg = document.getElementById('search-grid');
   const card = p => `
     <div class="playlist-card" onclick="openPlaylist(${p.id})">
       <div class="card-cover ${p.color}">
-        ${p.emoji}
+        ${coverArt(p)}
         <a class="play-btn" href="${getSpotifyUrl(p.name)}" target="_blank" onclick="event.stopPropagation()" title="Abrir no Spotify">▶</a>
       </div>
       <div class="card-name">${p.name}</div>
@@ -2411,7 +2440,7 @@ function buildTodaySection() {
       <div class="section-title">🎸 Playlist de Hoje</div>
     </div>
     <div class="today-hero ${p.color}" onclick="openPlaylist(${p.id})">
-      <div class="today-emoji">${p.emoji}</div>
+      <div class="today-emoji">${coverArt(p)}</div>
       <div class="today-body">
         <div class="today-label">Feita para hoje</div>
         <div class="today-name">${p.name}</div>
@@ -2431,7 +2460,7 @@ function buildTB100Section() {
       <div class="section-title">🏆 Coletânea TB 100</div>
     </div>
     <div class="today-hero ${p.color}" onclick="openPlaylist(${p.id})">
-      <div class="today-emoji">${p.emoji}</div>
+      <div class="today-emoji">${coverArt(p)}</div>
       <div class="today-body">
         <div class="today-label">Coletânea especial</div>
         <div class="today-name">${p.name}</div>
@@ -2689,7 +2718,7 @@ function openPlaylist(id) {
 
   dv.innerHTML = `
     <div class="detail-hero">
-      <div class="detail-cover ${currentPlaylist.color}" style="font-size:80px">${currentPlaylist.emoji}</div>
+      <div class="detail-cover ${currentPlaylist.color}" style="font-size:80px">${coverArt(currentPlaylist)}</div>
       <div class="detail-info">
         <div class="detail-type">Playlist Pública</div>
         <div class="detail-title">${currentPlaylist.name}</div>

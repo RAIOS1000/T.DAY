@@ -713,6 +713,26 @@ body {
   .cat-head span:nth-child(4), .cat-row span:nth-child(4) { display:none; }
 }
 
+/* ── PWA install + Spotify connect ── */
+.install-hidden { display: none !important; }
+.sp-card { background: var(--sp-card); border-radius: 12px; padding: 18px 20px; border-left: 3px solid var(--sp-green); }
+.sp-lead { font-size: 14px; color: var(--sp-light); line-height: 1.6; }
+.sp-steps { margin: 12px 0 14px 18px; font-size: 13px; color: var(--sp-gray); line-height: 1.9; }
+.sp-steps a { color: var(--sp-green); }
+.sp-steps code { background: rgba(255,255,255,.08); padding: 2px 7px; border-radius: 5px; color: #fff; font-size: 12px; word-break: break-all; }
+.sp-form { display: flex; gap: 8px; flex-wrap: wrap; }
+.sp-form input { flex: 1; min-width: 200px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); color: #fff; padding: 10px 14px; border-radius: 8px; font-size: 14px; font-family: inherit; }
+.sp-btn { border: none; cursor: pointer; }
+.sp-connected { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+.sp-user { display: flex; align-items: center; gap: 12px; }
+.sp-avatar { width: 46px; height: 46px; border-radius: 50%; background: var(--sp-green); display: flex; align-items: center; justify-content: center; font-size: 22px; }
+.sp-name { font-size: 16px; font-weight: 700; color: #fff; }
+.sp-sub { font-size: 12px; color: var(--sp-gray); text-transform: capitalize; }
+.sp-real { display: flex; gap: 18px; }
+.sp-kpi { text-align: center; }
+.sp-kpi b { display: block; font-family: 'Bebas Neue', sans-serif; font-size: 30px; color: var(--sp-green); letter-spacing: 1px; }
+.sp-kpi span { font-size: 11px; color: var(--sp-gray); }
+
 /* ── HISTÓRIA / TIMELINE ── */
 .timeline { padding-top: 4px; }
 .era { background: var(--sp-dark); border-radius: 12px; padding: 20px 22px; margin-bottom: 20px; border-left: 4px solid var(--era-color, #1DB954); }
@@ -877,6 +897,9 @@ body {
         <a class="nav-item" onclick="showPage('dashboard',this)" href="#">
           <span class="icon">📊</span> Dashboard
         </a>
+        <a class="nav-item install-btn install-hidden" onclick="tdayInstall()" href="#">
+          <span class="icon">📲</span> Instalar app
+        </a>
       </nav>
     </div>
 
@@ -921,6 +944,7 @@ body {
         <a class="nav-item" onclick="showPage('historia',this)" href="#"><span class="icon">🕰️</span> História</a>
         <a class="nav-item" onclick="showPage('monetize',this)" href="#"><span class="icon">💰</span> Monetizar</a>
         <a class="nav-item" onclick="showPage('dashboard',this)" href="#"><span class="icon">📊</span> Dashboard</a>
+        <a class="nav-item install-btn install-hidden" onclick="tdayInstall()" href="#"><span class="icon">📲</span> Instalar</a>
       </div>
 
       <!-- ══ HOME PAGE ══ -->
@@ -1025,6 +1049,11 @@ body {
         <div class="page-hero">
           <div class="greeting">🎛️ Painel de Controle</div>
           <p style="color:var(--sp-gray);font-size:14px;margin-top:8px">Gestão e organização de todas as suas playlists — construído para escalar e monetizar, um passo de cada vez.</p>
+        </div>
+
+        <div class="section">
+          <div class="section-header"><div class="section-title">🔗 Conectar ao Spotify</div></div>
+          <div id="painel-connect"></div>
         </div>
 
         <div id="painel-kpis" class="stats-row"></div>
@@ -2890,7 +2919,145 @@ function setGreeting() {
   document.getElementById('greeting').textContent = g;
 }
 
+// ── PWA (instalável + offline) ──
+let deferredPrompt = null;
+function initPWA() {
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
+  }
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    document.querySelectorAll('.install-btn').forEach(b => b.classList.remove('install-hidden'));
+  });
+  window.addEventListener('appinstalled', () => {
+    deferredPrompt = null;
+    document.querySelectorAll('.install-btn').forEach(b => b.classList.add('install-hidden'));
+  });
+}
+function tdayInstall() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.finally(() => { deferredPrompt = null; });
+  } else {
+    alert('Para instalar, abra o app pelo site publicado (GitHub Pages):\n\n• Android/PC (Chrome/Edge): menu do navegador → "Instalar app".\n• iPhone (Safari): botão Compartilhar → "Adicionar à Tela de Início".');
+  }
+}
+
+// ── Integração Spotify (API real via PKCE, sem backend) ──
+const SP_SCOPES = 'playlist-read-private playlist-read-collaborative user-read-private';
+function spClientId() { return (localStorage.getItem('tday-sp-client-id') || '').trim(); }
+function spRedirect() { return location.origin + location.pathname; }
+function spToken() { try { return JSON.parse(localStorage.getItem('tday-sp-token') || 'null'); } catch (e) { return null; } }
+function spSaveToken(t) { t.expires_at = Date.now() + (t.expires_in * 1000) - 30000; localStorage.setItem('tday-sp-token', JSON.stringify(t)); }
+function spClear() { localStorage.removeItem('tday-sp-token'); }
+function b64url(buf) { return btoa(String.fromCharCode.apply(null, new Uint8Array(buf))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''); }
+function randStr(n) { const a = new Uint8Array(n); crypto.getRandomValues(a); return Array.from(a, x => ('0'+(x & 0xff).toString(16)).slice(-2)).join(''); }
+async function spChallenge(verifier) { const d = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(verifier)); return b64url(d); }
+
+async function spConnect() {
+  const cid = spClientId();
+  if (!cid) { renderSpotifyPanel(); return; }
+  const secure = location.protocol === 'https:' || location.hostname === 'localhost';
+  if (!secure) { alert('A conexão com o Spotify só funciona no site publicado (HTTPS). Publique no GitHub Pages e acesse por lá.'); return; }
+  const verifier = randStr(64);
+  localStorage.setItem('tday-sp-verifier', verifier);
+  const challenge = await spChallenge(verifier);
+  const params = new URLSearchParams({
+    client_id: cid, response_type: 'code', redirect_uri: spRedirect(),
+    scope: SP_SCOPES, code_challenge_method: 'S256', code_challenge: challenge,
+  });
+  location.href = 'https://accounts.spotify.com/authorize?' + params.toString();
+}
+
+async function spHandleRedirect() {
+  const q = new URLSearchParams(location.search);
+  const code = q.get('code');
+  if (!code) return;
+  const verifier = localStorage.getItem('tday-sp-verifier');
+  try {
+    const res = await fetch('https://accounts.spotify.com/api/token', {
+      method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ client_id: spClientId(), grant_type: 'authorization_code', code, redirect_uri: spRedirect(), code_verifier: verifier }),
+    });
+    const tok = await res.json();
+    if (tok.access_token) spSaveToken(tok);
+  } catch (e) {}
+  history.replaceState({}, '', spRedirect());
+}
+
+async function spValidToken() {
+  let t = spToken();
+  if (!t) return null;
+  if (Date.now() < t.expires_at) return t.access_token;
+  if (!t.refresh_token) { spClear(); return null; }
+  try {
+    const res = await fetch('https://accounts.spotify.com/api/token', {
+      method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ client_id: spClientId(), grant_type: 'refresh_token', refresh_token: t.refresh_token }),
+    });
+    const tok = await res.json();
+    if (tok.access_token) { if (!tok.refresh_token) tok.refresh_token = t.refresh_token; spSaveToken(tok); return tok.access_token; }
+  } catch (e) {}
+  spClear(); return null;
+}
+
+async function spApi(path) {
+  const at = await spValidToken(); if (!at) return null;
+  try { const res = await fetch('https://api.spotify.com/v1' + path, { headers: { Authorization: 'Bearer ' + at } }); return res.ok ? res.json() : null; } catch (e) { return null; }
+}
+
+function spSaveClientId() { const v = (document.getElementById('sp-cid-input') || {}).value; if (v && v.trim()) { localStorage.setItem('tday-sp-client-id', v.trim()); renderSpotifyPanel(); } }
+function spForgetClientId() { localStorage.removeItem('tday-sp-client-id'); spClear(); renderSpotifyPanel(); }
+function spDisconnect() { spClear(); renderSpotifyPanel(); }
+
+function renderSpotifyPanel() {
+  const el = document.getElementById('painel-connect'); if (!el) return;
+  const cid = spClientId();
+  if (!cid) {
+    el.innerHTML = `<div class="sp-card">
+      <p class="sp-lead">Conecte sua conta do Spotify para ver <strong>dados reais</strong> (seu perfil, plano e nº de playlists). Funciona no site publicado (HTTPS).</p>
+      <ol class="sp-steps">
+        <li>Crie um app grátis no <a href="https://developer.spotify.com/dashboard" target="_blank">Spotify Developer Dashboard</a></li>
+        <li>Em <em>Redirect URIs</em>, cole exatamente: <code>${spRedirect()}</code></li>
+        <li>Copie o <em>Client ID</em> e cole abaixo:</li>
+      </ol>
+      <div class="sp-form">
+        <input id="sp-cid-input" placeholder="Cole seu Client ID aqui" />
+        <button class="btn-spotify sp-btn" onclick="spSaveClientId()">Salvar</button>
+      </div>
+    </div>`;
+    return;
+  }
+  if (!spToken()) {
+    el.innerHTML = `<div class="sp-card">
+      <p class="sp-lead">Client ID salvo ✓. Agora conecte sua conta:</p>
+      <div class="sp-form">
+        <button class="btn-spotify sp-btn" onclick="spConnect()">▶ Conectar Spotify</button>
+        <button class="pf-btn" onclick="spForgetClientId()">Trocar Client ID</button>
+      </div>
+    </div>`;
+    return;
+  }
+  el.innerHTML = `<div class="sp-card"><p class="sp-lead">Conectado ✓ Carregando dados reais…</p></div>`;
+  spApi('/me').then(me => {
+    if (!me) { el.innerHTML = `<div class="sp-card"><p class="sp-lead">Sessão expirada. <button class="btn-spotify sp-btn" onclick="spConnect()">Reconectar</button></p></div>`; return; }
+    spApi('/me/playlists?limit=1').then(pl => {
+      const total = pl ? pl.total : '—';
+      el.innerHTML = `<div class="sp-card sp-connected">
+        <div class="sp-user"><span class="sp-avatar">🎧</span><div><div class="sp-name">${me.display_name || me.id}</div><div class="sp-sub">Plano: ${me.product || '—'}</div></div></div>
+        <div class="sp-real"><div class="sp-kpi"><b>${total}</b><span>playlists reais</span></div></div>
+        <button class="pf-btn" onclick="spDisconnect()">Desconectar</button>
+      </div>`;
+    });
+  });
+}
+
+function initSpotify() { spHandleRedirect().then(renderSpotifyPanel); }
+
 // Init
+initPWA();
+initSpotify();
 setGreeting();
 buildLibrary();
 buildTodaySection();

@@ -665,6 +665,22 @@ body {
   .cat-head span:nth-child(4), .cat-row span:nth-child(4) { display:none; }
 }
 
+/* ── HISTÓRIA / TIMELINE ── */
+.timeline { padding-top: 4px; }
+.era { background: var(--sp-dark); border-radius: 12px; padding: 20px 22px; margin-bottom: 20px; border-left: 4px solid var(--era-color, #1DB954); }
+.era-head { display: flex; align-items: center; gap: 14px; }
+.era-icon { font-size: 28px; width: 52px; height: 52px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,.06); border-radius: 12px; }
+.era-title { font-size: 20px; font-weight: 700; color: #fff; }
+.era-sub { font-size: 13px; color: var(--sp-gray); margin-top: 2px; }
+.era-desc { font-size: 13px; color: var(--sp-light); line-height: 1.6; margin: 12px 0 16px; max-width: 660px; }
+.era-count { font-size: 11px; font-weight: 700; color: var(--era-color, #1DB954); }
+.era-artists { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 8px; }
+.hist-artist { display: flex; align-items: center; gap: 10px; padding: 9px 12px; background: var(--sp-card); border-radius: 8px; transition: background .15s; }
+.hist-artist:hover { background: var(--sp-hover); }
+.hist-year { font-family: 'Bebas Neue', sans-serif; font-size: 19px; letter-spacing: 1px; width: 46px; flex-shrink: 0; }
+.hist-name { flex: 1; font-size: 13px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hist-rank { font-size: 10px; font-weight: 700; color: var(--sp-gray); background: rgba(255,255,255,.06); padding: 2px 7px; border-radius: 20px; white-space: nowrap; }
+
 /* Monetize page */
 .mono-section { margin-bottom: 40px; }
 .mono-section h2 { font-size: 24px; font-weight: 700; margin-bottom: 20px; }
@@ -777,6 +793,9 @@ body {
         </a>
         <a class="nav-item" onclick="showPage('painel',this)" href="#">
           <span class="icon">🎛️</span> Painel
+        </a>
+        <a class="nav-item" onclick="showPage('historia',this)" href="#">
+          <span class="icon">🕰️</span> História
         </a>
         <a class="nav-item" onclick="showPage('monetize',this)" href="#">
           <span class="icon">💰</span> Monetizar
@@ -942,6 +961,15 @@ body {
           <div class="notice" style="margin-bottom:16px">Comece pequeno e vá marcando conforme avança. <strong>Seu progresso fica salvo</strong> neste navegador.</div>
           <div id="painel-roadmap"></div>
         </div>
+      </div>
+
+      <!-- ══ HISTÓRIA PAGE ══ -->
+      <div class="page" id="page-historia">
+        <div class="page-hero">
+          <div class="greeting">🕰️ História da Música</div>
+          <p style="color:var(--sp-gray);font-size:14px;margin-top:8px">Os 100 maiores artistas de todos os tempos, em ordem cronológica de surgimento — dos crooners do rádio à era do streaming.</p>
+        </div>
+        <div class="timeline" id="historia-timeline"></div>
       </div>
 
     </div><!-- /content -->
@@ -2558,6 +2586,34 @@ function buildCatalog(cat) {
   `;
 }
 
+const historia = [{"icon": "🎙️", "color": "#f5b041", "title": "Anos 1920–40", "sub": "A era do rádio e dos crooners", "desc": "Antes do rock, a voz era tudo. Microfone, big bands e o rádio dominavam as paradas.", "artists": [{"year": 1926, "name": "Bing Crosby", "rank": 67}, {"year": 1939, "name": "Frank Sinatra", "rank": 9}]}, {"icon": "🎸", "color": "#ff8c42", "title": "Anos 1950", "sub": "O nascimento do rock'n'roll", "desc": "A guitarra elétrica e a batida acelerada mudam tudo. Nasce a cultura jovem.", "artists": [{"year": 1954, "name": "Elvis Presley", "rank": 3}, {"year": 1955, "name": "Johnny Cash", "rank": 32}]}, {"icon": "✊", "color": "#e8200a", "title": "Anos 1960", "sub": "A revolução", "desc": "Beatles e Stones lideram a invasão britânica, a Motown define o soul e Dylan traz consciência às letras.", "artists": [{"year": 1961, "name": "The Beach Boys", "rank": 35}, {"year": 1961, "name": "Roberto Carlos", "rank": 81}, {"year": 1962, "name": "The Beatles", "rank": 1}, {"year": 1962, "name": "Bob Dylan", "rank": 37}, {"year": 1962, "name": "Stevie Wonder", "rank": 50}, {"year": 1962, "name": "Willie Nelson", "rank": 75}, {"year": 1963, "name": "The Rolling Stones", "rank": 7}, {"year": 1963, "name": "Bee Gees", "rank": 24}, {"year": 1963, "name": "Barbra Streisand", "rank": 33}, {"year": 1963, "name": "Bob Marley", "rank": 34}, {"year": 1964, "name": "Simon & Garfunkel", "rank": 48}, {"year": 1965, "name": "The Who", "rank": 66}, {"year": 1966, "name": "Neil Diamond", "rank": 29}, {"year": 1967, "name": "Pink Floyd", "rank": 8}, {"year": 1967, "name": "David Bowie", "rank": 46}, {"year": 1967, "name": "The Doors", "rank": 56}, {"year": 1967, "name": "Jimi Hendrix", "rank": 68}, {"year": 1968, "name": "Fleetwood Mac", "rank": 26}, {"year": 1968, "name": "Creedence Clearwater Revival", "rank": 80}, {"year": 1968, "name": "Deep Purple", "rank": 83}, {"year": 1968, "name": "Neil Young", "rank": 85}, {"year": 1969, "name": "Elton John", "rank": 12}, {"year": 1969, "name": "Led Zeppelin", "rank": 13}, {"year": 1969, "name": "Rod Stewart", "rank": 18}, {"year": 1969, "name": "Santana", "rank": 36}, {"year": 1969, "name": "Genesis", "rank": 62}, {"year": 1969, "name": "Julio Iglesias", "rank": 64}, {"year": 1969, "name": "Carpenters", "rank": 74}, {"year": 1969, "name": "Chicago", "rank": 90}]}, {"icon": "🪩", "color": "#bb8fce", "title": "Anos 1970", "sub": "Rock de estádio, disco e cantautores", "desc": "O rock fica grandioso, o disco toma as pistas e Michael Jackson começa a carreira solo.", "artists": [{"year": 1970, "name": "Eric Clapton", "rank": 21}, {"year": 1970, "name": "Paul McCartney", "rank": 59}, {"year": 1971, "name": "Billy Joel", "rank": 31}, {"year": 1971, "name": "Earth, Wind & Fire", "rank": 94}, {"year": 1971, "name": "ZZ Top", "rank": 99}, {"year": 1972, "name": "Michael Jackson", "rank": 2}, {"year": 1972, "name": "Eagles", "rank": 20}, {"year": 1973, "name": "Queen", "rank": 4}, {"year": 1973, "name": "ABBA", "rank": 22}, {"year": 1973, "name": "Bruce Springsteen", "rank": 23}, {"year": 1973, "name": "Aerosmith", "rank": 41}, {"year": 1975, "name": "AC/DC", "rank": 11}, {"year": 1975, "name": "Journey", "rank": 97}, {"year": 1976, "name": "Kenny Rogers", "rank": 58}, {"year": 1978, "name": "Prince", "rank": 42}, {"year": 1978, "name": "Dire Straits", "rank": 57}, {"year": 1978, "name": "The Police", "rank": 71}, {"year": 1978, "name": "Van Halen", "rank": 73}]}, {"icon": "📼", "color": "#e879f9", "title": "Anos 1980", "sub": "Pop, MTV e power ballads", "desc": "A MTV (1981) transforma música em imagem. Madonna, U2 e Metallica definem uma geração.", "artists": [{"year": 1980, "name": "U2", "rank": 14}, {"year": 1980, "name": "Bryan Adams", "rank": 86}, {"year": 1980, "name": "Iron Maiden", "rank": 88}, {"year": 1981, "name": "Céline Dion", "rank": 15}, {"year": 1981, "name": "Phil Collins", "rank": 30}, {"year": 1981, "name": "Depeche Mode", "rank": 79}, {"year": 1981, "name": "George Strait", "rank": 89}, {"year": 1982, "name": "Madonna", "rank": 6}, {"year": 1982, "name": "George Michael & Wham!", "rank": 63}, {"year": 1983, "name": "Metallica", "rank": 19}, {"year": 1983, "name": "R.E.M.", "rank": 84}, {"year": 1984, "name": "Bon Jovi", "rank": 25}, {"year": 1984, "name": "Red Hot Chili Peppers", "rank": 60}, {"year": 1985, "name": "Whitney Houston", "rank": 27}, {"year": 1985, "name": "Sting", "rank": 98}, {"year": 1987, "name": "Guns N' Roses", "rank": 43}, {"year": 1987, "name": "Enya", "rank": 87}, {"year": 1989, "name": "Garth Brooks", "rank": 38}, {"year": 1989, "name": "Nirvana", "rank": 65}]}, {"icon": "🎧", "color": "#48c9b0", "title": "Anos 1990", "sub": "Grunge, hip-hop e divas pop", "desc": "Nirvana explode o grunge, o hip-hop vira mainstream e nascem as divas e as boy bands.", "artists": [{"year": 1990, "name": "Mariah Carey", "rank": 16}, {"year": 1990, "name": "Green Day", "rank": 78}, {"year": 1991, "name": "Shakira", "rank": 82}, {"year": 1991, "name": "2Pac", "rank": 91}, {"year": 1991, "name": "Pearl Jam", "rank": 96}, {"year": 1993, "name": "Shania Twain", "rank": 95}, {"year": 1996, "name": "Eminem", "rank": 10}, {"year": 1996, "name": "Jay-Z", "rank": 70}, {"year": 1996, "name": "Backstreet Boys", "rank": 72}, {"year": 1998, "name": "Britney Spears", "rank": 49}]}, {"icon": "💿", "color": "#5dade2", "title": "Anos 2000", "sub": "Era digital, R&B e pop-punk", "desc": "O download muda o jogo. Surge a geração que domina até hoje: Beyoncé, Kanye, Rihanna e Taylor Swift.", "artists": [{"year": 2000, "name": "Coldplay", "rank": 39}, {"year": 2000, "name": "Linkin Park", "rank": 54}, {"year": 2000, "name": "P!nk", "rank": 92}, {"year": 2002, "name": "Maroon 5", "rank": 77}, {"year": 2003, "name": "Beyoncé", "rank": 61}, {"year": 2004, "name": "Kanye West", "rank": 47}, {"year": 2005, "name": "Rihanna", "rank": 40}, {"year": 2006, "name": "Taylor Swift", "rank": 5}, {"year": 2008, "name": "Adele", "rank": 53}, {"year": 2008, "name": "Lady Gaga", "rank": 69}, {"year": 2008, "name": "Katy Perry", "rank": 100}, {"year": 2009, "name": "Drake", "rank": 17}, {"year": 2009, "name": "Justin Bieber", "rank": 45}]}, {"icon": "📱", "color": "#1DB954", "title": "Anos 2010+", "sub": "A era do streaming", "desc": "Spotify e redes sociais ditam o sucesso. O K-pop (BTS) e o reggaeton (Bad Bunny) conquistam o mundo.", "artists": [{"year": 2010, "name": "Bruno Mars", "rank": 52}, {"year": 2011, "name": "The Weeknd", "rank": 51}, {"year": 2011, "name": "Ed Sheeran", "rank": 55}, {"year": 2011, "name": "Kendrick Lamar", "rank": 93}, {"year": 2013, "name": "BTS", "rank": 28}, {"year": 2013, "name": "Ariana Grande", "rank": 76}, {"year": 2016, "name": "Bad Bunny", "rank": 44}]}];
+
+function buildHistoria() {
+  const el = document.getElementById('historia-timeline');
+  if (!el) return;
+  el.innerHTML = historia.map(era => `
+    <div class="era" style="--era-color:${era.color}">
+      <div class="era-head">
+        <div class="era-icon">${era.icon}</div>
+        <div>
+          <div class="era-title">${era.title} <span class="era-count">· ${era.artists.length} artistas</span></div>
+          <div class="era-sub">${era.sub}</div>
+        </div>
+      </div>
+      <div class="era-desc">${era.desc}</div>
+      <div class="era-artists">
+        ${era.artists.map(a => `
+          <div class="hist-artist">
+            <span class="hist-year" style="color:${era.color}">${a.year}</span>
+            <span class="hist-name">${a.name}</span>
+            <span class="hist-rank">#${a.rank}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
 function buildPainel() {
   const total = playlists.length;
   const totalTracks = playlists.reduce((s, p) => s + p.tracks.length, 0);
@@ -2744,6 +2800,7 @@ buildRevCards();
 buildSteps();
 buildDashTable();
 buildPainel();
+buildHistoria();
 </script>
 </body>
 </html>

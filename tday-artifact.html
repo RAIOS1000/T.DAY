@@ -63,9 +63,20 @@ body {
   letter-spacing: 2px;
   color: var(--sp-white);
   margin-bottom: 28px;
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 11px;
 }
-.logo span { color: var(--red); }
+.logo-word { line-height: 1; }
+.logo .dot { color: var(--red); }
+.logo-mark { display: inline-flex; flex-shrink: 0; filter: drop-shadow(0 3px 8px rgba(224,32,10,.45)); }
+.eq .b { transform-box: fill-box; transform-origin: center bottom; animation: eqpulse .9s ease-in-out infinite; }
+.eq .b1 { animation-delay: 0s; }
+.eq .b2 { animation-delay: .18s; }
+.eq .b3 { animation-delay: .36s; }
+.eq .b4 { animation-delay: .12s; }
+@keyframes eqpulse { 0%, 100% { transform: scaleY(.45); } 50% { transform: scaleY(1); } }
+@media (prefers-reduced-motion: reduce) { .eq .b { animation: none; } }
 
 .nav-item {
   display: flex;
@@ -817,7 +828,23 @@ body {
   <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="sidebar-top">
-      <span class="logo">T<span>.</span>DAY</span>
+      <span class="logo">
+        <span class="logo-mark">
+          <svg class="eq" viewBox="0 0 64 64" width="34" height="34" aria-hidden="true">
+            <defs><linearGradient id="tdlg" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#ff5a3c"/><stop offset="1" stop-color="#b0140a"/>
+            </linearGradient></defs>
+            <rect x="4" y="4" width="56" height="56" rx="16" fill="url(#tdlg)"/>
+            <g fill="#fff">
+              <rect class="b b1" x="14" y="26" width="6" height="20" rx="3"/>
+              <rect class="b b2" x="24" y="18" width="6" height="28" rx="3"/>
+              <rect class="b b3" x="34" y="22" width="6" height="24" rx="3"/>
+              <rect class="b b4" x="44" y="28" width="6" height="18" rx="3"/>
+            </g>
+          </svg>
+        </span>
+        <span class="logo-word">T<span class="dot">.</span>DAY</span>
+      </span>
       <nav>
         <a class="nav-item active" onclick="showPage('home',this)" href="#">
           <span class="icon">🏠</span> Início

@@ -800,9 +800,22 @@ body {
 .page.active { display: block; }
 
 /* Responsive */
+.mobile-nav { display: none; }
 @media (max-width: 768px) {
   :root { --sidebar: 0px; }
   .sidebar { display: none; }
+  .topbar { display: none; }
+  .mobile-nav {
+    display: flex; gap: 6px; overflow-x: auto; padding: 12px 12px 8px;
+    position: sticky; top: 0; z-index: 11; background: var(--sp-dark);
+  }
+  .mobile-nav::-webkit-scrollbar { display: none; }
+  .mobile-nav .nav-item {
+    flex-shrink: 0; background: rgba(255,255,255,.07); padding: 8px 14px;
+    border-radius: 20px; white-space: nowrap; font-size: 13px;
+  }
+  .mobile-nav .nav-item.active { background: #fff; color: #000; }
+  .mobile-nav .nav-item .icon { font-size: 15px; width: auto; }
   .quick-grid { grid-template-columns: repeat(2, 1fr); }
   .cards-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
   .detail-hero { flex-direction: column; }
@@ -910,6 +923,16 @@ body {
     </div>
 
     <div class="content">
+
+      <!-- Menu para telas estreitas (celular / painel estreito) -->
+      <div class="mobile-nav">
+        <a class="nav-item active" onclick="showPage('home',this)" href="#"><span class="icon">🏠</span> Início</a>
+        <a class="nav-item" onclick="showPage('search',this)" href="#"><span class="icon">🔍</span> Buscar</a>
+        <a class="nav-item" onclick="showPage('painel',this)" href="#"><span class="icon">🎛️</span> Painel</a>
+        <a class="nav-item" onclick="showPage('historia',this)" href="#"><span class="icon">🕰️</span> História</a>
+        <a class="nav-item" onclick="showPage('monetize',this)" href="#"><span class="icon">💰</span> Monetizar</a>
+        <a class="nav-item" onclick="showPage('dashboard',this)" href="#"><span class="icon">📊</span> Dashboard</a>
+      </div>
 
       <!-- ══ HOME PAGE ══ -->
       <div class="page active" id="page-home">

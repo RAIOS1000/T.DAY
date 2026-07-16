@@ -603,6 +603,7 @@ body {
 .c20 { background: linear-gradient(135deg, #1a1a0d, #4a4a1a); }
 .c21 { background: linear-gradient(135deg, #0d0d1a, #1a1a4a); }
 .c22 { background: linear-gradient(135deg, #1a0d0d, #4a2a1a); }
+.c23 { background: linear-gradient(135deg, #07314a, #0ea5b7); }
 .t13 { color: #ff6b6b; }
 .t14 { color: #58d68d; }
 .t15 { color: #5dade2; }
@@ -613,6 +614,7 @@ body {
 .t20 { color: #d4ac0d; }
 .t21 { color: #7986cb; }
 .t22 { color: #e59866; }
+.t23 { color: #38bdf8; }
 
 /* Today featured hero */
 .today-hero {
@@ -961,6 +963,9 @@ body {
 
           <!-- Coletânea TB 100 (destaque) -->
           <div class="section" id="tb100-section"></div>
+
+          <!-- Diversão Kids (destaque) -->
+          <div class="section" id="kids-section"></div>
 
           <!-- Coleção TB 100 - 10 volumes -->
           <div class="section" id="volumes-section"></div>
@@ -2391,6 +2396,28 @@ const playlists = [
     {n:"Aerodynamic", a:"Daft Punk", d:"—"},
     {n:"Put Your Lights On", a:"Santana", d:"—"},
   ]},
+  { id:23, day:'KIDS', name:'Diversão Kids', desc:'Músicas animadas nacionais e internacionais para crianças (~10 anos) — energia, futebol e muita diversão.', color:'c23', text:'t23', emoji:'🦸', tracks:[
+    {n:'Happy', a:'Pharrell Williams', d:'3:53'},
+    {n:"Can't Stop the Feeling!", a:'Justin Timberlake', d:'3:56'},
+    {n:'Roar', a:'Katy Perry', d:'3:43'},
+    {n:'Believer', a:'Imagine Dragons', d:'3:24'},
+    {n:"I Ain't Worried", a:'OneRepublic', d:'2:28'},
+    {n:'Uptown Funk', a:'Mark Ronson ft. Bruno Mars', d:'4:30'},
+    {n:'Waka Waka (This Time for Africa)', a:'Shakira', d:'3:23'},
+    {n:'High Hopes', a:'Panic! At The Disco', d:'3:11'},
+    {n:'Eye of the Tiger', a:'Survivor', d:'4:05'},
+    {n:'Old Town Road', a:'Lil Nas X ft. Billy Ray Cyrus', d:'2:37'},
+    {n:'É Uma Partida de Futebol', a:'Skank', d:'3:38'},
+    {n:'Só Hoje', a:'Jota Quest', d:'4:15'},
+    {n:'Ai Se Eu Te Pego', a:'Michel Teló', d:'2:47'},
+    {n:'Sorte Grande', a:'Ivete Sangalo', d:'3:35'},
+    {n:'Só os Loucos Sabem', a:'Charlie Brown Jr.', d:'4:10'},
+    {n:'Brincadeira de Criança', a:'Molejo', d:'4:00'},
+    {n:'Balada (Tchê Tcherere Tchê Tchê)', a:'Gusttavo Lima', d:'3:19'},
+    {n:'Faraó Divindade do Egito', a:'Olodum', d:'4:30'},
+    {n:'Recomeçar', a:'Restart', d:'3:20'},
+    {n:'País Tropical', a:'Jorge Ben Jor', d:'3:15'},
+  ]},
 ];
 
 const revenues = [
@@ -2409,6 +2436,24 @@ const steps = [
   { n:'4', title:'Lance o Playlist Placement', desc:'Crie uma página no Beacons.ai (gratuito) e cobre R$ 200–500 por faixa. Divulgue em grupos de artistas independentes.', time:'Esta semana' },
   { n:'5', title:'Monte a comunidade premium', desc:'WhatsApp ou Discord com curadoria semanal exclusiva. Meta: 50 membros = R$ 2.350–4.850/mês recorrente.', time:'Mês 2' },
 ];
+
+function buildKidsSection() {
+  const p = playlists.find(x => x.day === 'KIDS');
+  if (!p) return;
+  document.getElementById('kids-section').innerHTML = `
+    <div class="section-header"><div class="section-title">🦸 Diversão Kids</div></div>
+    <div class="today-hero ${p.color}" onclick="openPlaylist(${p.id})">
+      <div class="today-emoji">${coverArt(p)}</div>
+      <div class="today-body">
+        <div class="today-label">Para crianças (~10 anos)</div>
+        <div class="today-name">${p.name}</div>
+        <div class="today-desc">${p.desc}</div>
+        <div class="today-meta">${p.tracks.length} músicas · nacional + internacional</div>
+      </div>
+      <a class="today-play" href="${getSpotifyUrl(p.name)}" target="_blank" onclick="event.stopPropagation()" title="Abrir no Spotify">▶</a>
+    </div>
+  `;
+}
 
 function buildVolumesSection() {
   const vols = playlists.filter(x => /^V\d+$/.test(x.day)).sort((a,b)=>a.id-b.id);
@@ -2459,13 +2504,14 @@ function buildLibrary() {
 function dayLabel(day) {
   if (day === 'HOJE') return 'Hoje';
   if (day === 'TB100') return 'Coletânea';
+  if (day === 'KIDS') return 'Kids';
   const v = /^V(\d+)$/.exec(day);
   if (v) return 'Vol. ' + v[1];
   return 'Dia ' + day;
 }
 
 function getTextColor(t) {
-  const map = {t1:'#ff6a00',t2:'#00c8ff',t3:'#f5d500',t4:'#6ab882',t5:'#e8200a',t6:'#ff8c42',t7:'#8080cc',t8:'#c8a800',t9:'#ff2200',t10:'#f5d500',t11:'#c77dff',t12:'#ffd24a',t13:'#ff6b6b',t14:'#58d68d',t15:'#5dade2',t16:'#f5b041',t17:'#bb8fce',t18:'#e879f9',t19:'#48c9b0',t20:'#d4ac0d',t21:'#7986cb',t22:'#e59866'};
+  const map = {t1:'#ff6a00',t2:'#00c8ff',t3:'#f5d500',t4:'#6ab882',t5:'#e8200a',t6:'#ff8c42',t7:'#8080cc',t8:'#c8a800',t9:'#ff2200',t10:'#f5d500',t11:'#c77dff',t12:'#ffd24a',t13:'#ff6b6b',t14:'#58d68d',t15:'#5dade2',t16:'#f5b041',t17:'#bb8fce',t18:'#e879f9',t19:'#48c9b0',t20:'#d4ac0d',t21:'#7986cb',t22:'#e59866',t23:'#38bdf8'};
   return map[t] || '#fff';
 }
 
@@ -2498,7 +2544,7 @@ function buildCardsGrid() {
     </div>
   `;
   // Home mostra os 10 dias de lançamento; as coletâneas especiais aparecem em destaque acima.
-  grid.innerHTML = playlists.filter(p => !['HOJE','TB100'].includes(p.day) && !/^V\d+$/.test(p.day)).map(card).join('');
+  grid.innerHTML = playlists.filter(p => !['HOJE','TB100','KIDS'].includes(p.day) && !/^V\d+$/.test(p.day)).map(card).join('');
   sg.innerHTML = playlists.map(card).join('');
 }
 
@@ -2612,6 +2658,7 @@ const spotifyLinks = {
   20: 'https://open.spotify.com/playlist/67psZqcWNodGcqKNLM8o9A',
   21: 'https://open.spotify.com/playlist/4t3us7fNp1kx5Pb0fv3EUM',
   22: 'https://open.spotify.com/playlist/40zEYfZxVZUloux6c99rCp',
+  23: 'https://open.spotify.com/playlist/02gnSP8Ms8RxB7TsD8wIO3',
 };
 
 function playlistCategory(p) {
@@ -3062,6 +3109,7 @@ setGreeting();
 buildLibrary();
 buildTodaySection();
 buildTB100Section();
+buildKidsSection();
 buildVolumesSection();
 buildQuickGrid();
 buildCardsGrid();
